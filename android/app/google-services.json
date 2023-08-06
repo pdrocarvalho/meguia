@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "460560137799",
+    "project_id": "me-guia-326302",
+    "storage_bucket": "me-guia-326302.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460560137799:android:069a7ae99566e164a97b62",
+        "android_client_info": {
+          "package_name": "com.meguia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "460560137799-luof7ck4qtiolmaadjuqu4bskn8lg1lu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiiIjeu_4yZ1RUWsJzXdoz8-6e1hBO_6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "460560137799-luof7ck4qtiolmaadjuqu4bskn8lg1lu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
