@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   discoverItemWrapper: {
+    alignItems: 'center',
     paddingVertical: 20,
   },
   discoverItemImage: {

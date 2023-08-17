@@ -18,6 +18,7 @@ export function TabRoutes() {
         tabBarInactiveTintColor: THEME.COLORS.GREY,
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Screen

@@ -15,6 +15,8 @@ type itemProps = {
     place_id: string;
     tag: string;
     url: string;
+    isCovered: boolean;
+    weekday_text?: [string];
   };
 };
 

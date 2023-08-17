@@ -11,11 +11,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
-//import { collection, getDocs } from '@firebase/firestore';
+import { Cards } from '../../components/Cards';
 
 import firestore from '@react-native-firebase/firestore';
 import discoverData from '../../../assets/data/discoverData';
-import { dataBase } from '../../services/firebaseConfig';
 
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -35,7 +34,7 @@ type itemProps = {
   };
 };
 
-type PlacesProps = {
+type placeData = {
   description: string;
   formatted_address: string;
   id: string;
@@ -49,9 +48,11 @@ type PlacesProps = {
 };
 
 export function Home({ navigation }: any) {
-  const [places, setPlaces] = useState<PlacesProps[]>([]);
-  const [filteredPlaces, setFilteredPlaces] = useState<PlacesProps[]>([]);
+  const [rawPlaces, setRawPlaces] = useState<placeData[]>([]);
+  const [places, setPlaces] = useState<placeData[]>([]);
+  const [filteredPlaces, setFilteredPlaces] = useState<placeData[]>([]);
   const [searchText, setSearchText] = useState<string>('');
+  const [tagText, setTagText] = useState<string>(null);
 
   useEffect(() => {
     const subscribe = async () => {
@@ -64,8 +65,8 @@ export function Home({ navigation }: any) {
               id: doc.id,
               ...doc.data(),
             };
-          }) as PlacesProps[];
-
+          }) as placeData[];
+          setRawPlaces(data);
           setPlaces(data);
           setFilteredPlaces(data);
         });
@@ -91,25 +92,28 @@ export function Home({ navigation }: any) {
     }
   };
 
+  const tagFilter = (tagText: string) => {
+    if (tagText != null) {
+      const newData = rawPlaces.filter((item) => {
+        const itemData = item.tag ? item.tag.toLowerCase() : ''.toLowerCase();
+        const tagTextData = tagText.toLowerCase();
+
+        return itemData.indexOf(tagTextData) > -1;
+      });
+      setFilteredPlaces(newData);
+      setPlaces(newData);
+    } else {
+      setFilteredPlaces(rawPlaces);
+      setPlaces(rawPlaces);
+    }
+  };
+
   const renderDiscoverItem = ({ item }: itemProps) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('Details', { item: item })}>
-        <ImageBackground
-          source={{ uri: item.img }}
-          style={styles.discoverItem}
-          imageStyle={styles.discoverItemImage}
-        >
-          <Text style={styles.discoverItemTitle}>{item.name}</Text>
-          <View style={styles.discoverItemLocationWrapper}>
-            <Entypo
-              name="location-pin"
-              size={18}
-              color={THEME.COLORS.WHITE}
-            />
-            <Text style={styles.discoverItemLocationText}>{item.tag}</Text>
-          </View>
-        </ImageBackground>
-      </TouchableOpacity>
+      <Cards
+        navigation={navigation}
+        item={item}
+      />
     );
   };
 
@@ -149,10 +153,14 @@ export function Home({ navigation }: any) {
               />
             </View>
             <View style={styles.discoverCategoryWrapper}>
-              <Text style={[styles.discoverCategoryText, { color: THEME.COLORS.PRIMARY }]}>
-                Todos
-              </Text>
-              <Text style={styles.discoverCategoryText}>Praias</Text>
+              <TouchableOpacity onPress={() => tagFilter(null)}>
+                <Text style={[styles.discoverCategoryText, { color: THEME.COLORS.PRIMARY }]}>
+                  Todos
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => tagFilter('praia')}>
+                <Text style={styles.discoverCategoryText}>Praias</Text>
+              </TouchableOpacity>
               <Text style={styles.discoverCategoryText}>Pontos Turísticos</Text>
             </View>
           </View>
@@ -161,8 +169,7 @@ export function Home({ navigation }: any) {
               data={filteredPlaces}
               renderItem={renderDiscoverItem}
               keyExtractor={(item) => item.id}
-              horizontal
-              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
             />
           </View>
         </SafeAreaView>
