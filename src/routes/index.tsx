@@ -1,5 +1,5 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { UserRoutes } from "./user.routes";
+import { NavigationContainer } from '@react-navigation/native';
+import { UserRoutes } from './user.routes';
 
 export function Routes() {
   return (
