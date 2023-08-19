@@ -5,7 +5,7 @@ import { THEME } from '../themes';
 
 import { Home } from '../screens/Home';
 import { Commerces } from '../screens/Commerces';
-import { Login } from '../screens/Login';
+import { SignIn } from '../screens/SignIn';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -48,8 +48,8 @@ export function TabRoutes() {
         }}
       />
       <Screen
-        name="Login"
-        component={Login}
+        name="SignIn"
+        component={SignIn}
         options={{
           tabBarIcon: ({ color }) => (
             <Entypo

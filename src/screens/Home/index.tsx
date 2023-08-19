@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { Cards } from '../../components/Cards';
 
 import firestore from '@react-native-firebase/firestore';
-import discoverData from '../../../assets/data/discoverData';
+import auth from '@react-native-firebase/auth';
 
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -117,63 +117,67 @@ export function Home({ navigation }: any) {
     );
   };
 
+  function signOut() {
+    auth().signOut();
+  }
+
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <SafeAreaView>
-          {/* Header */}
+      <SafeAreaView>
+        {/* Header */}
 
-          <View style={styles.menuWrapper}>
-            <Feather
-              name="menu"
-              size={32}
-              color={THEME.COLORS.BLACK}
-            />
+        <View style={styles.menuWrapper}>
+          <Feather
+            name="menu"
+            size={32}
+            color={THEME.COLORS.BLACK}
+          />
+          <TouchableOpacity onPress={signOut}>
             <Image
               source={require('../../assets/pictures/person.png')}
               style={styles.profileImage}
             />
-          </View>
+          </TouchableOpacity>
+        </View>
 
-          {/*Discover*/}
-          <View style={styles.discoverWrapper}>
-            <Text style={styles.discoverTitle}>Descubra</Text>
-            <View style={styles.discoverSearchWrapper}>
-              <TextInput
-                style={styles.discoverSearchBox}
-                onChangeText={(searchText) => searchFilter(searchText)}
-                placeholder="Pra onde quer ir...?"
-                value={searchText}
-              />
-              <Entypo
-                style={styles.discoverSeacrhIcon}
-                name="magnifying-glass"
-                size={22}
-                color={THEME.COLORS.DARKGREY}
-              />
-            </View>
-            <View style={styles.discoverCategoryWrapper}>
-              <TouchableOpacity onPress={() => tagFilter(null)}>
-                <Text style={[styles.discoverCategoryText, { color: THEME.COLORS.PRIMARY }]}>
-                  Todos
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => tagFilter('praia')}>
-                <Text style={styles.discoverCategoryText}>Praias</Text>
-              </TouchableOpacity>
-              <Text style={styles.discoverCategoryText}>Pontos Turísticos</Text>
-            </View>
-          </View>
-          <View style={styles.discoverItemWrapper}>
-            <FlatList
-              data={filteredPlaces}
-              renderItem={renderDiscoverItem}
-              keyExtractor={(item) => item.id}
-              showsVerticalScrollIndicator={false}
+        {/*Discover*/}
+        <View style={styles.discoverWrapper}>
+          <Text style={styles.discoverTitle}>Descubra</Text>
+          <View style={styles.discoverSearchWrapper}>
+            <TextInput
+              style={styles.discoverSearchBox}
+              onChangeText={(searchText) => searchFilter(searchText)}
+              placeholder="Pra onde quer ir...?"
+              value={searchText}
+            />
+            <Entypo
+              style={styles.discoverSeacrhIcon}
+              name="magnifying-glass"
+              size={22}
+              color={THEME.COLORS.DARKGREY}
             />
           </View>
-        </SafeAreaView>
-      </ScrollView>
+          <View style={styles.discoverCategoryWrapper}>
+            <TouchableOpacity onPress={() => tagFilter(null)}>
+              <Text style={[styles.discoverCategoryText, { color: THEME.COLORS.PRIMARY }]}>
+                Todos
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => tagFilter('praia')}>
+              <Text style={styles.discoverCategoryText}>Praias</Text>
+            </TouchableOpacity>
+            <Text style={styles.discoverCategoryText}>Pontos Turísticos</Text>
+          </View>
+        </View>
+        <View style={styles.discoverItemWrapper}>
+          <FlatList
+            data={filteredPlaces}
+            renderItem={renderDiscoverItem}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      </SafeAreaView>
     </View>
   );
 }

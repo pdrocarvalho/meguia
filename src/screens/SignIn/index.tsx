@@ -1,27 +1,22 @@
-import { View, Text, ScrollView, SafeAreaView, TextInput, Button } from 'react-native';
+import React, { useState } from 'react';
+import { Button, ScrollView, TextInput, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { styles } from './styles';
 import { THEME } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
-import { useState } from 'react';
 
-function singUp({ email, password }) {
+function signIn(email, password) {
   auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then((userCredentials) => {
-      console.log(userCredentials);
-    })
+    .signInWithEmailAndPassword(email, password)
+    .then(() => console.log('Usuário logado'))
     .catch((error) => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('Email already in use');
-      } else if (error.code === 'auth/invalid-email') {
-        console.log('Invalid email');
-      }
+      console.log(error.message);
     });
 }
 
-export function SignUp() {
+export function SignIn({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -39,17 +34,21 @@ export function SignUp() {
           </View>
           <View style={styles.loginWrapper}>
             <TextInput
+              onChangeText={(value) => setEmail(value)}
               style={styles.emailTextInput}
-              onChangeText={(emailInputText) => setEmail(emailInputText)}
             ></TextInput>
             <TextInput
+              onChangeText={(value) => setPassword(value)}
               style={styles.emailTextInput}
-              onChangeText={(passwordInputText) => setPassword(passwordInputText)}
             ></TextInput>
             <Button
+              title="Entrar"
+              onPress={() => signIn(email, password)}
+            />
+            <Button
               title="Cadastrar"
-              onPress={() => singUp({ email, password })}
-            ></Button>
+              onPress={() => navigation.navigate('SignUp')}
+            />
           </View>
         </SafeAreaView>
       </ScrollView>
