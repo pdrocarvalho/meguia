@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ScrollView, TextInput, View } from 'react-native';
+import { Alert, Button, ScrollView, TextInput, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,18 +7,18 @@ import { styles } from './styles';
 import { THEME } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
 
-function signIn(email, password) {
-  auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(() => console.log('Usuário logado'))
-    .catch((error) => {
-      console.log(error.message);
-    });
-}
-
 export function SignIn({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  function handleSignIn(email, password) {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => Alert.alert('Conta', 'Usuário logado com sucesso'))
+      .catch((error) => {
+        Alert.alert(error.message);
+      });
+  }
 
   return (
     <View style={styles.container}>
@@ -39,11 +39,12 @@ export function SignIn({ navigation }) {
             ></TextInput>
             <TextInput
               onChangeText={(value) => setPassword(value)}
+              secureTextEntry
               style={styles.emailTextInput}
             ></TextInput>
             <Button
               title="Entrar"
-              onPress={() => signIn(email, password)}
+              onPress={() => handleSignIn(email, password)}
             />
             <Button
               title="Cadastrar"
