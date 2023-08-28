@@ -1,58 +1,44 @@
-import React, { useState } from 'react';
-import { Alert, Button, ScrollView, TextInput, View } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { styles } from './styles';
 import { THEME } from '../../themes';
 import Feather from 'react-native-vector-icons/Feather';
+import { SignInForm } from '../../components/Forms/SignInForm';
 
 export function SignIn({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  function handleSignIn(email, password) {
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => Alert.alert('Conta', 'Usuário logado com sucesso'))
-      .catch((error) => {
-        Alert.alert(error.message);
-      });
-  }
-
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <SafeAreaView>
-          {/*Header*/}
-          <View style={styles.menuWrapper}>
-            <Feather
-              name="menu"
-              size={32}
-              color={THEME.COLORS.BLACK}
-            />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior="padding"
+          enabled
+        >
+          <View style={styles.content}>
+            <View style={styles.headerWrapper}>
+              <Text style={styles.titleText}>Explore!</Text>
+              <Text style={styles.subtitleText}>Entre com sua conta</Text>
+            </View>
+            <View style={styles.loginWrapper}>
+              <SignInForm navigation={navigation} />
+            </View>
+            <View style={styles.signUpWrapper}>
+              <Text style={styles.signUpText}>Ainda não tem uma conta?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                <Text style={styles.signUpLink}>Cadastre-se</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.loginWrapper}>
-            <TextInput
-              onChangeText={(value) => setEmail(value)}
-              style={styles.emailTextInput}
-            ></TextInput>
-            <TextInput
-              onChangeText={(value) => setPassword(value)}
-              secureTextEntry
-              style={styles.emailTextInput}
-            ></TextInput>
-            <Button
-              title="Entrar"
-              onPress={() => handleSignIn(email, password)}
-            />
-            <Button
-              title="Cadastrar"
-              onPress={() => navigation.navigate('SignUp')}
-            />
-          </View>
-        </SafeAreaView>
-      </ScrollView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </View>
   );
 }

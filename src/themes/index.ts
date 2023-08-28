@@ -16,10 +16,10 @@ type ThemeProps = {
 };
 export const THEME: ThemeProps = {
   COLORS: {
-    PRIMARY: '#3A0CA3',
-    SECONDARY: '#4361EE',
-    GREY: '#D1D3D2',
-    DARKGREY: '#676767',
+    PRIMARY: '#3A5447', //#3A0CA3
+    SECONDARY: '#97DBB9', //#4361EE
+    GREY: '#D1D3D3',
+    DARKGREY: '#535454',
     BLACK: '#0C0f0E',
     WHITE: '#FBFCFE',
   },
