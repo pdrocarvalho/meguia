@@ -1,17 +1,14 @@
 import {
   Keyboard,
   KeyboardAvoidingView,
-  ScrollView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { styles } from './styles';
-import { THEME } from '../../themes';
-import Feather from 'react-native-vector-icons/Feather';
+
 import { SignInForm } from '../../components/Forms/SignInForm';
 
 export function SignIn({ navigation }) {
