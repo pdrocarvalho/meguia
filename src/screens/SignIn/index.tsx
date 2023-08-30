@@ -16,7 +16,7 @@ export function SignIn({ navigation }) {
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
-          behavior="padding"
+          behavior="position"
           enabled
         >
           <View style={styles.content}>

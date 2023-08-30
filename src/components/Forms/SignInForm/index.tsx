@@ -1,28 +1,25 @@
 import { useState } from 'react';
-import {
-  Alert,
-  Keyboard,
-  KeyboardAvoidingView,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Alert, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import { useForm } from 'react-hook-form';
 
-import { Input } from '../../Input';
+import { ControlledInput } from '../../ControlledInput';
 import { MyButton } from '../../MyButton';
 import { styles } from './styles';
 
+type SignInFormData = {
+  email: string;
+  password: string;
+};
+
 export function SignInForm({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { control, handleSubmit } = useForm();
   const [isLoading, setIsloading] = useState(false);
 
-  function handleSignIn(email: string, password: string) {
+  function handleSignIn(data: SignInFormData) {
     setIsloading(true);
     auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(data.email, data.password)
       .then(() =>
         Alert.alert('Conta', 'Usuário logado com sucesso', [
           { text: 'Ok', onPress: () => navigation.navigate('Home') },
@@ -36,18 +33,20 @@ export function SignInForm({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Input
+      <ControlledInput
+        name="email"
         placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
+        control={control}
       />
-      <Input
+      <ControlledInput
+        name="password"
         placeholder="Senha"
-        onChangeText={(text) => setPassword(text)}
+        control={control}
         secureTextEntry
       />
 
       <MyButton
-        onPress={() => handleSignIn(email, password)}
+        onPress={handleSubmit(handleSignIn)}
         title={'Entrar'}
         isLoading={isLoading}
       />
