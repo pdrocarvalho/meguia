@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Alert, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { ControlledInput } from '../../ControlledInput';
 import { MyButton } from '../../MyButton';
 import { styles } from './styles';
+import { signInSchema } from '../../../schemas/signInSchema';
 
 type SignInFormData = {
   email: string;
@@ -13,8 +15,14 @@ type SignInFormData = {
 };
 
 export function SignInForm({ navigation }) {
-  const { control, handleSubmit } = useForm();
   const [isLoading, setIsloading] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(signInSchema),
+  });
 
   function handleSignIn(data: SignInFormData) {
     setIsloading(true);
@@ -37,11 +45,13 @@ export function SignInForm({ navigation }) {
         name="email"
         placeholder="Email"
         control={control}
+        error={errors.email}
       />
       <ControlledInput
         name="password"
         placeholder="Senha"
         control={control}
+        error={errors.password}
         secureTextEntry
       />
 
