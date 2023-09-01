@@ -1,58 +1,29 @@
-import { View, Text, ScrollView, SafeAreaView, TextInput, Button, Alert } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import { View, Text, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard } from 'react-native';
 
 import { styles } from './styles';
-import { THEME } from '../../themes';
-import Feather from 'react-native-vector-icons/Feather';
-import { useState } from 'react';
 
-export function SignUp() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import { SignUpForm } from '../../components/Forms/SignUpForm';
 
-  function handleSignUp({ email, password }) {
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
-        Alert.alert('Conta', 'Usuário criado com sucesso!');
-      })
-      .catch((error) => {
-        if (error.code === 'auth/email-already-in-use') {
-          Alert.alert('Email já está em uso');
-        } else if (error.code === 'auth/invalid-email') {
-          Alert.alert('Email inválido');
-        }
-      });
-  }
-
+export function SignUp({ navigation }) {
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <SafeAreaView>
-          {/*Header*/}
-          <View style={styles.menuWrapper}>
-            <Feather
-              name="menu"
-              size={32}
-              color={THEME.COLORS.BLACK}
-            />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior="position"
+          enabled
+        >
+          <View style={styles.content}>
+            <View style={styles.headerWrapper}>
+              <Text style={styles.titleText}>Crie</Text>
+              <Text style={styles.titleText}>sua conta</Text>
+              <Text style={styles.subtitleText}>Faça seu cadastro rápido!</Text>
+            </View>
+            <View style={styles.formWrapper}>
+              <SignUpForm navigation={navigation} />
+            </View>
           </View>
-          <View style={styles.loginWrapper}>
-            <TextInput
-              style={styles.emailTextInput}
-              onChangeText={(emailInputText) => setEmail(emailInputText)}
-            ></TextInput>
-            <TextInput
-              style={styles.emailTextInput}
-              onChangeText={(passwordInputText) => setPassword(passwordInputText)}
-            ></TextInput>
-            <Button
-              title="Cadastrar"
-              onPress={() => handleSignUp({ email, password })}
-            ></Button>
-          </View>
-        </SafeAreaView>
-      </ScrollView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
